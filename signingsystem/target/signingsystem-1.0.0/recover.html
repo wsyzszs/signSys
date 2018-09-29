@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="layui/css/layui.css" />
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script>
+        layui.use('form', function() {
+            var $ = layui.jquery,
+                form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function(data) {
+                //layer.msg(JSON.stringify(data.field));
+                $.post("recover.do", data.field, function(result) {
+                    if(result.code == 200) {
+                        layer.msg('您的密码为：'+result.date,{time:10*1000});
+                        window.location.href="login.html";
+                    } else {
+                        layer.msg(result.msg);
+                    }
+                })
+                return false;
+            });
+        });
+    </script>
+    <style>
+        .layui-row {
+            width: 600px;
+            position: absolute;
+            margin-left: -200px;
+            margin-top: -80px;
+            top: 15%;
+            left: 40%;
+            display: block;
+            z-index: 2000;
+            background: #fff;
+            padding: 20 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-row layui-col-space10">
+
+    <div class="layui-col-md8 layui-col-md-offset2">
+        <fieldset class="layui-elem-field layui-field-title layui-timeline-title">
+            <legend>
+                <a name="use">请输入您的用户名和邮箱来找回密码</a>
+            </legend>
+        </fieldset>
+        <form class="layui-form" action="">
+            <input type="hidden" id="imgsrc" name="headimg" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" required lay-verify="required|email" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+
+</html>

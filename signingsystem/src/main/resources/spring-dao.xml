@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--加载数据库配置-->
+    <context:property-placeholder location="classpath:*config.properties"/>
+    <!--配置数据库连接池-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${dbdriver}"/>
+        <property name="url" value="${dburl}"/>
+        <property name="username" value="${dbuser}"/>
+        <property name="password" value="${dbpass}"/>
+
+    </bean>
+    <!--会话工厂-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--配置Mapper所在位置  扫描注解或xxxMapper.xml文件-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.qfedu.sign.mapper"/>
+    </bean>
+
+   <!-- &lt;!&ndash;shiro框架对象注入START&ndash;&gt;
+
+    &lt;!&ndash; 自定义Realm &ndash;&gt;
+    <bean id="myRealm" class="com.qfedu.oa1804.shiro.MyRealm"/>
+
+    &lt;!&ndash; 安全管理器 &ndash;&gt;
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+        <property name="cacheManager" ref="cacheManager" />
+    </bean>
+
+    &lt;!&ndash; 缓存管理器 使用Ehcache实现 &ndash;&gt;
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
+    </bean>
+
+
+    &lt;!&ndash; 配置 ShiroFilter bean: 该 bean 的 id 必须和 web.xml 文件中配置的 shiro filter 的 name 一致 &ndash;&gt;
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        &lt;!&ndash; 装配 securityManager:    Shiro的核心安全接口,这个属性是必须的 &ndash;&gt;
+        <property name="securityManager" ref="securityManager"/>
+
+        &lt;!&ndash;下方为Shiro自身的逻辑处理，分别为认证失败、成功、未授权三种结果跳转到对应的页面&ndash;&gt;
+
+        &lt;!&ndash; 认证成功后的页面 &ndash;&gt;
+        <property name="successUrl" value="/index.html"/>
+
+        &lt;!&ndash; 身份认证(Authentication)失败的页面 &ndash;&gt;
+        <property name="loginUrl" value="/login.html"/>
+
+        &lt;!&ndash; 权限认证(Authorization)失败的页面 &ndash;&gt;
+        <property name="unauthorizedUrl" value="/error.html"/>
+        &lt;!&ndash; Shiro过滤链的定义：具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截.&ndash;&gt;
+        <property name="filterChainDefinitions">
+            <value>
+                &lt;!&ndash; /user/student*/**=roles[teacher]
+                 /user/teacher*/**=perms["user:create"] &ndash;&gt;
+                &lt;!&ndash;静态资源、登陆界面可匿名访问&ndash;&gt;
+                /logout.do=logout
+                /media/**=anon
+                /login.html=anon
+                /login.do=anon
+                &lt;!&ndash;除以上资源，其他均需登陆&ndash;&gt;
+                /**=authc
+            </value>
+        </property>
+    </bean>
+-->
+    <!--shiro框架对象注入END-->
+</beans>

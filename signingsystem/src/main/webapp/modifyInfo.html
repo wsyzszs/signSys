@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息修改</title>
+    <link rel="stylesheet" href="layui/css/layui.css" />
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script>
+        layui.use('form', function() {
+            var $ = layui.jquery,
+                form = layui.form;
+
+            //表单初始值。。。
+
+            //监听提交
+            form.on('submit(formDemo)', function(data) {
+                //layer.msg(JSON.stringify(data.field));
+                $.post("modify.do", data.field, function(data) {
+                    if(data.code == 200) {
+                        layer.msg("修改已成功！");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                })
+                return false;
+            });
+
+            $("#cancle").click(function () {
+                window.location.href="index.html";
+            })
+        });
+
+
+    </script>
+    <style>
+        .layui-row {
+            width: 600px;
+            position: absolute;
+            margin-left: -200px;
+            margin-top: -80px;
+            top: 15%;
+            left: 40%;
+            display: block;
+            z-index: 2000;
+            background: #fff;
+            padding: 200;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-row layui-col-space10">
+
+    <div class="layui-col-md8 layui-col-md-offset2">
+        <fieldset class="layui-elem-field layui-field-title layui-timeline-title">
+            <legend>
+                <a name="use">个人信息修改</a>
+                <a href="index.html">返回主页</a>
+            </legend>
+        </fieldset>
+        <form class="layui-form" action="">
+            <input type="hidden" id="imgsrc" name="headimg" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" required lay-verify="required|email" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn-danger" lay-submit lay-filter="formDemo">修改</button>
+                    <button class="layui-btn layui-btn-primary" id="cancle">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+
+</html>
